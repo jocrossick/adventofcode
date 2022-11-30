@@ -1,0 +1,25 @@
+{
+  "name": "adventofcode22",
+  "version": "1.0.0",
+  "description": "Advent of Code 2022",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcrossick/adventofcode22.git"
+  },
+  "author": "Jo Crossick",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jcrossick/adventofcode22/issues"
+  },
+  "homepage": "https://github.com/jcrossick/adventofcode22#readme",
+  "dependencies": {
+    "fs": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1"
+  }
+}
