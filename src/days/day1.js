@@ -1,22 +1,27 @@
-const { readFile } = require("../files/read");
+const day1 = (input, part) => {
+  const addedCalories = [];
+  input
+    .map((a) => parseInt(a))
+    .reduce(
+      (acc, curr) =>
+        isNaN(curr) ? Math.min(addedCalories.push(acc), 0) : acc + curr,
+      0
+    );
 
-const day1 = () => {
+  const sortedAddedCalories = addedCalories.sort((a, b) => a - b);
+  const part1Solution = sortedAddedCalories[addedCalories.length - 1];
+  const part2Solution =
+    sortedAddedCalories[addedCalories.length - 1] +
+    sortedAddedCalories[addedCalories.length - 2] +
+    sortedAddedCalories[addedCalories.length - 3];
 
-    const addedArray = [];
-    readFile("day1").reduce((acc, curr) => {
-        const thisInt = parseInt(curr);
-        if (isNaN(thisInt)) {
-            addedArray.push(acc);
-            return 0;
-        }
-        return acc + thisInt;
-    }, 0);
+  console.log("Part 1 is", part1Solution);
+  console.log("Part 2 is", part2Solution);
 
-    console.log(addedArray);
+  if (part == 2) {
+    return part2Solution;
+  }
+  return part1Solution;
+};
 
-    const sortedArray = (addedArray.sort((a, b) => a - b));
-    
-    return sortedArray[addedArray.length-1] + sortedArray[addedArray.length-2]+ sortedArray[addedArray.length-3];
-}
-
-module.exports = { day1 }
+module.exports = { day1 };
