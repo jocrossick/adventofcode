@@ -1,6 +1,5 @@
 const day1 = (input, part) => {
-  const topIndex = part == 1 ? 0 : 2;
-  let addedCalories = new Array(topIndex + 1).fill(0);
+  let addedCalories = new Array(part == 1 ? 1 : 3).fill(0);
   input
     .map((a) => parseInt(a))
     .reduce(
