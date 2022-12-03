@@ -1,19 +1,18 @@
 const score = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const day3 = (input, part) => {
-
   let elfGroups = [];
   if (part == 2) {
     for (let i = 3; i <= input.length; i = i + 3) {
       elfGroups.push(input.slice(i - 3, i));
     }
   } else {
-    elfGroups = input.map(
-      (rucksack => [
-        rucksack.slice(0, rucksack.length / 2),
-        rucksack.slice(rucksack.length / 2),
-      ])
-    );
+    for (let i = 0; i < input.length; i++) {
+      elfGroups.push([
+        input[i].slice(0, input[i].length / 2),
+        input[i].slice(input[i].length / 2),
+      ]);
+    }
   }
 
   const groupNames = elfGroups
