@@ -1,7 +1,7 @@
 const score = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const day3 = (input, part) => {
-    
+
   let elfGroups = [];
   if (part == 2) {
     for (let i = 3; i <= input.length; i = i + 3) {
@@ -38,4 +38,4 @@ const getMatchingItemsFromArray = (arr) => {
   return matchingItems;
 };
 
-module.exports = { day3Part1, day3 };
+module.exports = { day3 };

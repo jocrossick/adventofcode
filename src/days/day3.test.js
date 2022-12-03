@@ -1,5 +1,5 @@
 const { readFile } = require("../files/read");
-const { day3Part1, day3 } = require("./day3");
+const { day3 } = require("./day3");
 
 describe("day3 test runs", () => {
   test("day 3 TDD", () => {
