@@ -1,16 +1,22 @@
 const score = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-const day3 = (input, part) => {
-  const scores = input.map((rucksack) =>
-    rucksack
-      .slice(0, rucksack.length / 2)
-      .split("")
-      .filter((char) =>
-        rucksack.slice(rucksack.length / 2).indexOf(char) > -1 ? true : false
-      )
-      .map((letter) => score.indexOf(letter))
+const day3Part1 = (input) => {
+  const scoresAll = input.map((rucksack) =>
+    getMatchingItems(
+      rucksack.slice(0, rucksack.length / 2),
+      rucksack.slice(rucksack.length / 2)
+    ).map((letter) => score.indexOf(letter))
   );
-  return scores.reduce((acc, curr) => acc + curr[0], 0);
+  return scoresAll.flat().reduce((acc, curr) => acc + curr);
 };
 
-module.exports = { day3 };
+const getMatchingItems = (first, second) =>
+  Array.from(
+    new Set(
+      first
+        .split("")
+        .filter((char) => (second.indexOf(char) > -1 ? true : false))
+    )
+  );
+
+module.exports = { day3Part1 };
