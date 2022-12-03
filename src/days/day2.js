@@ -35,10 +35,7 @@ const winner = (them, you) => {
   if (them - you == 0) {
     return draw;
   }
-  if ((you - them + 3) % 3 == 1) {
-    return win;
-  }
-  return lose;
+  return ((you - them + 3) % 3) % 2 ? win : lose;
 };
 
 const play = (them, strategy) => {
