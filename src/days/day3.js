@@ -1,31 +1,41 @@
 const score = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-const day3Part2 = (input) => {
-    const elfGroups = [];
-    for(let i = 0; i < input.length; i = i+3) {
-        elfGroups.push([input[i], input[i+1], input[i+2]])
+const day3 = (input, part) => {
+    
+  let elfGroups = [];
+  if (part == 2) {
+    for (let i = 3; i <= input.length; i = i + 3) {
+      elfGroups.push(input.slice(i - 3, i));
     }
-    const groupNames = elfGroups.map(group => getMatchingItems(getMatchingItems(group[0].split(""), group[1].split("")), group[2].split(""))).flat();
-    return groupNames.map((letter) => score.indexOf(letter)).reduce((acc, curr) => acc + curr);
-}
+  } else {
+    elfGroups = input.map(
+      (rucksack => [
+        rucksack.slice(0, rucksack.length / 2),
+        rucksack.slice(rucksack.length / 2),
+      ])
+    );
+  }
 
-const day3Part1 = (input) => {
-  const scoresAll = input.map((rucksack) =>
-    getMatchingItems(
-      rucksack.slice(0, rucksack.length / 2).split(""),
-      rucksack.slice(rucksack.length / 2).split("")
-    ).map((letter) => score.indexOf(letter))
-  );
-  return scoresAll.flat().reduce((acc, curr) => acc + curr);
+  const groupNames = elfGroups
+    .map((group) => getMatchingItemsFromArray(group))
+    .flat();
+  return groupNames
+    .map((letter) => score.indexOf(letter))
+    .reduce((acc, curr) => acc + curr);
 };
 
-const getMatchingItems = (first, second) =>
-//console.log("getMatchingItems with", first, second) || 
-  Array.from(
-    new Set(
-      first
-        .filter((char) => (second.indexOf(char) > -1 ? true : false))
-    )
-  );
+const getMatchingItemsFromArray = (arr) => {
+  let matchingItems = [...arr[0].split("")];
+  arr.forEach((element) => {
+    matchingItems = Array.from(
+      new Set(
+        matchingItems.filter((char) =>
+          element.indexOf(char) > -1 ? true : false
+        )
+      )
+    );
+  });
+  return matchingItems;
+};
 
-module.exports = { day3Part1, day3Part2 };
+module.exports = { day3Part1, day3 };
