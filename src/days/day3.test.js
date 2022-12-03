@@ -1,5 +1,5 @@
 const { readFile } = require("../files/read");
-const { day3Part1 } = require("./day3");
+const { day3Part1, day3Part2 } = require("./day3");
 
 describe("day3 test runs", () => {
   test("day 3 TDD", () => {
@@ -12,12 +12,12 @@ describe("day3 test runs", () => {
     expect(day3Result).toStrictEqual(157);
   });
 
-  xtest("day 3 part 2 test", () => {
+  test("day 3 part 2 test", () => {
     const input = ['vJrwpWtwJgWrhcsFMMfFFhFp',
       'jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL',
       'PmmdzqPrVvPwwTWBwg']
     const results = day3Part2(input, 2);
-    expect(results).toStrictEqual(3);
+    expect(results).toStrictEqual(18);
   })
 });
 
@@ -25,6 +25,10 @@ describe("day3 answers", () => {
   test("day 3 part 1", () => {
     const day3Result = day3Part1(readFile("day3"), 1);
     expect(day3Result).toStrictEqual(8123);
+  });
+  test("day 3 part 2", () => {
+    const day3Result = day3Part2(readFile("day3"), 1);
+    expect(day3Result).toStrictEqual(2620);
   });
 
 });
