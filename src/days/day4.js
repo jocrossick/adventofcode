@@ -5,12 +5,23 @@ const day4 = (input, part) => {
         .split(",")
         .map((section) => section.split("-").map((number) => parseInt(number)))
     )
-    .filter(
-      (pair) =>
-        (pair[0][0] >= pair[1][0] && pair[0][1] <= pair[1][1]) ||
-        (pair[0][0] <= pair[1][0] && pair[0][1] >= pair[1][1])
+    .filter((pair) =>
+      part == 1
+        ? (pair[0][0] >= pair[1][0] && pair[0][1] <= pair[1][1]) ||
+          (pair[0][0] <= pair[1][0] && pair[0][1] >= pair[1][1])
+        : !(
+            (pair[0][0] < pair[1][0] && pair[0][1] < pair[1][0]) ||
+            (pair[0][0] > pair[1][1] && pair[0][1] > pair[1][1])
+          )
     );
   return sectionPairs.length;
 };
 
 module.exports = { day4 };
+
+//xxxooooxx
+//xooxxxxxx
+//xxooxxxxx
+//xxxooxxxx
+//xxxxooxxx
+//xxxxxxoox
