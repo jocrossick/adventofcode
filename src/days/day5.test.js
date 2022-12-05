@@ -19,6 +19,6 @@ describe("day5 answer", () => {
   });
   test("day 5 answer part 2", () => {
     const result = day5(readFile("day5"), 2);
-    expect(result).toStrictEqual('RLFNRTNFB');
+    expect(result).toStrictEqual('MHQTLJRLB');
   });
 })
