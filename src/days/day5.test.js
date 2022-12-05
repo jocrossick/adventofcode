@@ -11,6 +11,6 @@ describe("day5 test runs", () => {
 describe("day5 answer", () => {
   test("day 5 answer", () => {
     const result = day5(readFile("day5"), 1);
-    expect(result).toStrictEqual('CMZ');
+    expect(result).toStrictEqual('RLFNRTNFB');
   });
 })

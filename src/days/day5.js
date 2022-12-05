@@ -10,7 +10,7 @@ const day5 = (input, part) => {
     };
   });
 
-  instructions.forEach(instruction => applyMove(instruction, stack));
+  instructions.forEach(instruction => part == 1 ? applyMovePart1(instruction, stack) : applyMovePart2(instruction, stack));
 
   return stack.reduce((acc, curr) => acc+curr.pop(), '');
 
@@ -35,7 +35,13 @@ const getStack = (input) => {
   return stack;
 };
 
-const applyMove = ({ moveQty, from, to}, stack) => {
+const applyMovePart1 = ({ moveQty, from, to}, stack) => {
+    for (let i = 1; i <= moveQty; i++) {
+        stack[to-1].push(stack[from-1].pop())
+    }
+}
+
+const applyMovePart2 = ({ moveQty, from, to}, stack) => {
     for (let i = 1; i <= moveQty; i++) {
         stack[to-1].push(stack[from-1].pop())
     }
