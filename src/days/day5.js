@@ -3,17 +3,20 @@ const day5 = (input, part) => {
 
   const instructions = input.slice(input.indexOf("") + 1).map((line) => {
     const words = line.split(" ");
-    return { 
-        moveQty: parseInt(words[1]), 
-        from: parseInt(words[3]), 
-        to: parseInt(words[5])
+    return {
+      moveQty: parseInt(words[1]),
+      from: parseInt(words[3]),
+      to: parseInt(words[5]),
     };
   });
 
-  instructions.forEach(instruction => part == 1 ? applyMovePart1(instruction, stack) : applyMovePart2(instruction, stack));
+  instructions.forEach((instruction) =>
+    part == 1
+      ? applyMovePart1(instruction, stack)
+      : applyMovePart2(instruction, stack)
+  );
 
-  return stack.reduce((acc, curr) => acc+curr.pop(), '');
-
+  return stack.reduce((acc, curr) => acc + curr.pop(), "");
 };
 
 const getStack = (input) => {
@@ -35,16 +38,16 @@ const getStack = (input) => {
   return stack;
 };
 
-const applyMovePart1 = ({ moveQty, from, to}, stack) => {
-    for (let i = 1; i <= moveQty; i++) {
-        stack[to-1].push(stack[from-1].pop())
-    }
-}
+const applyMovePart1 = ({ moveQty, from, to }, stack) => {
+  for (let i = 1; i <= moveQty; i++) {
+    stack[to - 1].push(stack[from - 1].pop());
+  }
+};
 
-const applyMovePart2 = ({ moveQty, from, to}, stack) => {
-    for (let i = 1; i <= moveQty; i++) {
-        stack[to-1].push(stack[from-1].pop())
-    }
-}
+const applyMovePart2 = ({ moveQty, from, to }, stack) => {
+  const moveIndex = stack[from - 1].length - moveQty;
+  stack[to - 1].push(...stack[from - 1].slice(moveIndex));
+  stack[from - 1] = stack[from - 1].slice(0, moveIndex);
+};
 
 module.exports = { day5 };
