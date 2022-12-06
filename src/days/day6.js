@@ -1,9 +1,10 @@
 const day6 = (input, part) => {
+    const uniqueLength = part == 2 ? 14 : 4;
     const chars = input.split('');
-    for (let i = 0; i < chars.length-4; i++) {
-        const signal = new Set(chars.slice(i, i+4));
-        if (signal.size == 4) {
-            return i + 4;
+    for (let i = 0; i < chars.length-uniqueLength; i++) {
+        const signal = new Set(chars.slice(i, i+uniqueLength));
+        if (signal.size == uniqueLength) {
+            return i + uniqueLength;
         }
     }
 }
