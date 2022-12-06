@@ -1,10 +1,13 @@
 const day6 = (input, part) => {
-    const uniqueLength = part == 2 ? 14 : 4;
-    const chars = input.split('');
-    for (let i = 0; i < chars.length-uniqueLength; i++) {
-        const signal = new Set(chars.slice(i, i+uniqueLength));
-        if (signal.size == uniqueLength) {
-            return i + uniqueLength;
+    const startLength = 4;
+    const messageLength = 14;
+    const lookFor = part == 2 ? messageLength : startLength;
+
+    const signal = input.split('');
+    for (let i = 0; i < signal.length-lookFor; i++) {
+        const message = new Set(signal.slice(i, i+lookFor));
+        if (message.size == lookFor) {
+            return i + lookFor;
         }
     }
 }
