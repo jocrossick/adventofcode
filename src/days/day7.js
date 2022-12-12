@@ -29,11 +29,14 @@ const day7 = (input, part) => {
     JSON.stringify(contents, null, "\t")
   );
 
-  const filtered = Object.keys(contents).filter(
-    (key) => contents[key].size <= 100000 && contents[key].type == "dir"
-  );
+  if (part == 1 ) {
+    const filtered = Object.keys(contents).filter(
+      (key) => contents[key].size <= 100000 && contents[key].type == "dir"
+    );
+  
+    return filtered.reduce((acc, key) => acc + contents[key].size, 0);
+  }
 
-  return filtered.reduce((acc, key) => acc + contents[key].size, 0);
 };
 
 const getStructure = (input) => {
