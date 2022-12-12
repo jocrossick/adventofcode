@@ -29,14 +29,25 @@ const day7 = (input, part) => {
     JSON.stringify(contents, null, "\t")
   );
 
-  if (part == 1 ) {
+  if (part == 1) {
     const filtered = Object.keys(contents).filter(
       (key) => contents[key].size <= 100000 && contents[key].type == "dir"
     );
-  
+
     return filtered.reduce((acc, key) => acc + contents[key].size, 0);
   }
 
+  const totalAvailable = 70000000;
+  const requiredSpace = 30000000;
+  const totalUsed = contents["-/"].size;
+  const minSize = totalUsed - totalAvailable + requiredSpace;
+  console.log("Min size is", minSize);
+
+  return Object.keys(contents).reduce(
+    (acc, curr) =>
+    contents[curr].type == "dir" && contents[curr].size >= minSize ? Math.min(contents[curr].size, acc) : acc,
+    totalUsed
+  );
 };
 
 const getStructure = (input) => {
@@ -81,7 +92,9 @@ const getStructure = (input) => {
 
     if (element.substring(0, 2) != "$ ") {
       if (element.substring(0, 4) == "dir ") {
-        contents[thisDirName].childDirs.push(slugifyPath(currPath) + "-" + element.substring(4));
+        contents[thisDirName].childDirs.push(
+          slugifyPath(currPath) + "-" + element.substring(4)
+        );
       } else {
         const [size, name] = element.split(" ");
         contents[slugifyPath(currPath) + "-" + name] = {
@@ -90,7 +103,9 @@ const getStructure = (input) => {
           parentDir: thisDirName,
         };
         try {
-          contents[thisDirName].childFiles.push(slugifyPath(currPath) + "-" + name);
+          contents[thisDirName].childFiles.push(
+            slugifyPath(currPath) + "-" + name
+          );
         } catch (err) {
           console.log(
             `Error ${err} with Dir ${thisDirName} and contents`,

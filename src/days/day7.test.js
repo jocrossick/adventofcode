@@ -3,7 +3,7 @@ const { day7, getStructure } = require("./day7");
 
 describe("day7 test runs part 1", () => {
 
-  test("day 7 part 1 test 1", () => {
+  xtest("day 7 part 1 test 1", () => {
     const result = day7(readFile("day7-test"), 1);
     expect(result).toStrictEqual(95437);
   });
@@ -20,5 +20,11 @@ describe("day7 answer", () => {
       const result = day7(readFile("day7"), 1);
       expect(result).toStrictEqual(1886043);
     });
+
+    test("day 7 part 2", () => {
+      const result = day7(readFile("day7"), 2);
+      expect(result).toStrictEqual(1886043);
+    });
+
   });
   
