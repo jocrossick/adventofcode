@@ -1,7 +1,7 @@
 const { readFile } = require("../files/read");
 const { day6 } = require("./day6");
 
-describe("day6 test runs part 1", () => {
+xdescribe("day6 test runs part 1", () => {
   test("day 6 part 1 test 1", () => {
     const result = day6("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 1);
     expect(result).toStrictEqual(7);
@@ -23,7 +23,7 @@ describe("day6 test runs part 1", () => {
     expect(result).toStrictEqual(11);
   });
 });
-describe("day6 test runs part 1", () => {
+xdescribe("day6 test runs part 1", () => {
   test("day 6 part 2 test 1", () => {
     const result = day6("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 2);
     expect(result).toStrictEqual(19);
@@ -46,7 +46,7 @@ describe("day6 test runs part 1", () => {
   });
 });
 
-describe("Day 6 results", () => {
+xdescribe("Day 6 results", () => {
   test("day 6 part 1", () => {
     const result = day6(readFile("day6")[0], 1);
     expect(result).toStrictEqual(1287);
