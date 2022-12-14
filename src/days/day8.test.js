@@ -1,7 +1,7 @@
 const { readFile } = require("../files/read");
 const { day8 } = require("./day8");
 
-describe("day8 test runs part 1", () => {
+xdescribe("day8 test runs part 1", () => {
 
   test("day 8 part 1 test 1", () => {
     const result = day8(readFile("day8-test"), 1);
@@ -14,7 +14,7 @@ describe("day8 test runs part 1", () => {
   })
 });
 
-describe("day8 answer", () => {
+xdescribe("day8 answer", () => {
 
     test("day 8 part 1 answer", () => {
       const result = day8(readFile("day8"), 1);
