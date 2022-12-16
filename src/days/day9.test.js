@@ -8,7 +8,7 @@ describe("day9 test runs part 1", () => {
     expect(result).toStrictEqual(13);
   });
 
-  test.only("day 9 part 2", () => {
+  test("day 9 part 2", () => {
     const result = day9(readFile("day9-test2"), 2);
     expect(result).toStrictEqual(36);    
   })
@@ -21,7 +21,7 @@ describe("day9 answer", () => {
       expect(result).toStrictEqual(6175);
     });
   
-    test.only("day 9 part 2", () => {
+    test("day 9 part 2", () => {
       const result = day9(readFile("day9"), 2);
       expect(result).toStrictEqual(2362); //too low
     })

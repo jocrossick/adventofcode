@@ -11,24 +11,19 @@ const day9 = (input, part) => {
     for (let i = 0; i < parseInt(repetitions); i++) {
       history.push([...curr.map((each) => [...each])]);
 
-      move(direction)(curr[0]);
+      moveHead(direction)(curr[0]);
       curr.forEach((entry, index) => cascade(entry, curr[index + 1]));
     }
   });
 
   history.push([...curr.map((each) => [...each])]);
 
-  return history.map((entry) => entry[entry.length - 1])
-  .sort()
-  .filter(
-    (position, index, arr) =>
-      index == 0 ||
-      position[0] != arr[index - 1][0] ||
-      position[1] != arr[index - 1][1]
-  ).length;
+  const tail = history.map((entry) => entry[entry.length - 1]).map(pos => `${pos[0]},${pos[1]}`)
+  const uniqueTails = new Set(tail);
+  return uniqueTails.size;
 };
 
-const move = (direction) => {
+const moveHead = (direction) => {
   switch (direction) {
     case "R":
       return (head) => (head[0] = head[0] + 1);
