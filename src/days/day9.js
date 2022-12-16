@@ -18,7 +18,9 @@ const day9 = (input, part) => {
 
   history.push([...curr.map((each) => [...each])]);
 
-  const tail = history.map((entry) => entry[entry.length - 1]).map(pos => `${pos[0]},${pos[1]}`)
+  const tail = history
+    .map((entry) => entry[entry.length - 1])
+    .map((pos) => `${pos[0]},${pos[1]}`);
   const uniqueTails = new Set(tail);
   return uniqueTails.size;
 };
@@ -43,18 +45,36 @@ const cascade = (thisOne, nextOne) => {
   if (nextOne == undefined) {
     return;
   }
+  let diagonalMove = false;
+  if (
+    Math.abs(thisOne[0] - nextOne[0]) + Math.abs(thisOne[1] - nextOne[1]) ==
+    4
+  ) {
+    diagonalMove = true;
+  }
   if (thisOne[0] - nextOne[0] == 2) {
     nextOne[0] = nextOne[0] + 1;
-    nextOne[1] = thisOne[1];
-  } else if (thisOne[0] - nextOne[0] == -2) {
+    if (!diagonalMove) {
+      nextOne[1] = thisOne[1];
+    }
+  }
+  if (thisOne[0] - nextOne[0] == -2) {
     nextOne[0] = nextOne[0] - 1;
-    nextOne[1] = thisOne[1];
-  } else if (thisOne[1] - nextOne[1] == 2) {
+    if (!diagonalMove) {
+      nextOne[1] = thisOne[1];
+    }
+  } 
+  if (thisOne[1] - nextOne[1] == 2) {
     nextOne[1] = nextOne[1] + 1;
-    nextOne[0] = thisOne[0];
-  } else if (thisOne[1] - nextOne[1] == -2) {
+    if (!diagonalMove) {
+      nextOne[0] = thisOne[0];
+    }
+  } 
+  if (thisOne[1] - nextOne[1] == -2) {
     nextOne[1] = nextOne[1] - 1;
-    nextOne[0] = thisOne[0];
+    if (!diagonalMove) {
+      nextOne[0] = thisOne[0];
+    }
   }
 };
 
