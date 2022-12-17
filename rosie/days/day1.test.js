@@ -1,7 +1,7 @@
 const { readFile } = require("../files/read");
 const { day1 } = require("./day1");
 
-describe.only("day1 test runs", () => {
+xdescribe("day1 test runs", () => {
     test("day 1 part 1", () => {
       const day1Result = day1(readFile("day1-test"), 1);
       //expect(day1Result).toStrictEqual(24000);
