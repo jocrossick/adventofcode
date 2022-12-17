@@ -1,4 +1,4 @@
-const { readFile } = require("../files/read");
+const { readFile } = require("../../files/read");
 const { day6 } = require("./day6");
 
 xdescribe("day6 test runs part 1", () => {
@@ -48,11 +48,11 @@ xdescribe("day6 test runs part 1", () => {
 
 xdescribe("Day 6 results", () => {
   test("day 6 part 1", () => {
-    const result = day6(readFile("day6")[0], 1);
+    const result = day6(readFile("days0-9/day6")[0], 1);
     expect(result).toStrictEqual(1287);
   });
   test("day 6 part 2", () => {
-    const result = day6(readFile("day6")[0], 2);
+    const result = day6(readFile("days0-9/day6")[0], 2);
     expect(result).toStrictEqual(3716);
   });
 });
