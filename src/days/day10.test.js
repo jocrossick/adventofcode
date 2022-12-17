@@ -2,7 +2,7 @@ const { readFile } = require("../files/read");
 const { day10 } = require("./day10");
 
 describe("day10 test runs part 1", () => {
-  xtest("Day 10 short example", () => {
+  test("Day 10 short example", () => {
     const result = day10(["noop", "addx 3", "addx -5"], 1);
     expect(result).toStrictEqual(-1);
   });
