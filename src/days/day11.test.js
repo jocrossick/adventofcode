@@ -45,26 +45,26 @@ describe("day11 test runs part 1", () => {
 
   });
 
-  test("Day 22 part 1 test",() => {
+  test("Day 11 part 1 test",() => {
     const monkeys20 = day11(readFile("day11-test"), 20, 1);
     expect(monkeys20).toStrictEqual(10605);
 
   })
 
   xtest("day 11 part 2", () => {
-    const result = day11(readFile("day11-test"), 2);
-    expect(result).toStrictEqual(1);
+    const result = day11(readFile("day11-test"), 10000, 2);
+    expect(result).toStrictEqual(2713310158);
    });
 });
 
 describe("day11 answer", () => {
   test("day 11 part 1 answer", () => {
     const result = day11(readFile("day11"), 20, 1);
-    expect(result).toStrictEqual(1);
+    expect(result).toStrictEqual(56120);
   });
 
   xtest("day 11 part 2", () => {
-    const result = day11(readFile("day11"), 2);
-    expect(result).toStrictEqual(1);
+    const result = day11(readFile("day11"), 10000, 2);
+    expect(result).toStrictEqual(8119992305); //too low
   });
 });
