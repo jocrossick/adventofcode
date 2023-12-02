@@ -1,4 +1,6 @@
 const { readFile } = require("../useful/read");
+const forwardRegex = /[0-9]|one|two|three|four|five|six|seven|eight|nine/g;
+const backwardsRegex = /[0-9]|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin/g;
 
 //Your puzzle answer was 54388.
 const day1_part1 = (filename) => {
@@ -20,36 +22,36 @@ const day1_part1 = (filename) => {
   return solution;
 };
 
+//53515
 const day1_part2 = (filename) => {
 
   const entries = readFile(filename);
+  console.log("Number of entries is ", entries.length);
   const numbersToAdd = entries.map(entry => {
     if (entry.length <= 0) {
       return 0;
     }
 
-    const numbers = entry.match(/[0-9]|one|two|three|four|five|six|seven|eight|nine/g);
-
-    if (numbers.length <= 0) {
-      console.log('Did not find any numbers in string ', entry);
-      return 0;
-    }
-
-    const firstNumber = getNumber(numbers[0]);
-    const secondNumber = getNumber(numbers[numbers.length-1]);
-
-    console.log("Input string is ", entry);
-    const targetNumber = firstNumber.concat(secondNumber);
-    console.log("Target number is ", targetNumber);
+    const targetNumber = parseNumberPhrase(entry);
     return parseInt(targetNumber);
   });
-  console.log("All the numbers", numbersToAdd);
+
   const solution = numbersToAdd.reduce((acc, number) => acc + number, 0);
 
   return solution;
 };
 
-const getNumber = aNumberString => {
+const parseNumberPhrase = anEntryString => {
+  const forwardNumbers = anEntryString.match(forwardRegex);
+  const backwardsNumbers = anEntryString.split('').reverse().reduce((str, char) => str+char).match(backwardsRegex);
+
+
+  const firstNumber = getNumber(forwardNumbers[0]);
+  const secondNumber = getNumber(backwardsNumbers[0]);
+  return firstNumber.concat(secondNumber);
+}
+
+const getNumber = (aNumberString, isFirst) => {
   switch (aNumberString) {
     case 'one':
       return '1';
@@ -69,10 +71,39 @@ const getNumber = aNumberString => {
       return '8';
     case 'nine':
       return '9';
+    case 'eno':
+      return '1';
+    case 'owt':
+      return '2';
+    case 'eerht':
+      return '3';
+    case 'ruof':
+      return '4';
+    case 'evif':
+      return '5';
+    case 'xis':
+      return '6';
+    case 'neves':
+      return '7';
+    case 'thgie':
+      return '8';
+    case 'enin':
+      return '9';
     default:
       return aNumberString;
   }
 }
+
+if(parseNumberPhrase('oneight') != '18') {
+  console.log("oneight first test failed");
+}
+if(parseNumberPhrase('eighthree') != '83') {
+  console.log("eighthree last test failed");
+}
+if(parseNumberPhrase('eighthreeight') != '88') {
+  console.log("eighthreeight last test failed");
+}
+
 
 const day1 = () => {
   const solution = day1_part2("day1-part1")
