@@ -10,6 +10,19 @@ const parseInput = (filename) => {
   inputLines.pop();
 
   return inputLines.map(line => {
+    // const exampleStructure = {
+    //   game: 3,
+    //   sets: [
+    //     {
+    //       red: 3,
+    //       blue: 2
+    //     },
+    //     {
+    //       red: 6,
+    //       green: 1
+    //     }
+    //   ]
+    // }
     const [game, description] = line.split(': ');
     const setsStringArr = description.split('; ');
     const sets = setsStringArr.map(setString => {
@@ -32,8 +45,7 @@ const testParseInput = () => {
 }
 testParseInput();
 
-//Part 1: 2283
-const day2 = () => {
+const part1 = () => {
   const allGames = parseInput('part1');
   const elfConditionsKeys = Object.keys(elfConditions);
   const possibleGames = allGames.filter(game => {
@@ -48,9 +60,32 @@ const day2 = () => {
     })
     return possibleSets.length == game.sets.length;
   })
-
   console.log("Solution is ", possibleGames.reduce((acc, game) => acc + parseInt(game.game), 0 ));
+}
 
+//78669
+const part2 = () => {
+  const allGames = parseInput('part1');
+  allGames.forEach(game => {
+    game.minimumSet = {};
+    game.sets.forEach(pick => {
+      for (const [colour, value] of Object.entries(pick)) {
+        if (game.minimumSet[colour] == undefined) {
+          game.minimumSet[colour] = 0;
+        }
+        game.minimumSet[colour] = Math.max(game.minimumSet[colour],parseInt(value));
+      }})
+  });
+  const score = allGames.reduce((acc, game) => {
+    const power = Object.values(game.minimumSet).reduce((acc2, val) => acc2* parseInt(val), 1)
+    return acc + power;
+  }, 0);
+  console.log("Solution is ", score);
+}
+
+//Part 1: 2283
+const day2 = () => {
+  part2();
 }
 
 module.exports = { day2 }
