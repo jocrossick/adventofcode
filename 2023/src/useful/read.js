@@ -1,8 +1,8 @@
 const fs = require("fs");
 
-const readFile = (dayName) => {
+const readFile = (dayName, fileName) => {
 
-    return fs.readFileSync("src/input/" + dayName + ".txt", "utf-8").split("\n");
+    return fs.readFileSync("src/today/" + dayName + "/" + fileName + ".txt", "utf-8").split("\n");
 
 }
 

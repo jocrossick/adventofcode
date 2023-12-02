@@ -1,11 +1,11 @@
-const { readFile } = require("../useful/read");
+const { readFile } = require("../../useful/read");
 const forwardRegex = /[0-9]|one|two|three|four|five|six|seven|eight|nine/g;
 const backwardsRegex = /[0-9]|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin/g;
 
 //Your puzzle answer was 54388.
 const day1_part1 = (filename) => {
 
-  const entries = readFile(filename);
+  const entries = readFile('day1', filename);
   const solution = entries.reduce((acc, entry) => {
     if (entry.length <= 0) {
       return acc;
@@ -25,7 +25,7 @@ const day1_part1 = (filename) => {
 //53515
 const day1_part2 = (filename) => {
 
-  const entries = readFile(filename);
+  const entries = readFile('day1', filename);
   console.log("Number of entries is ", entries.length);
   const numbersToAdd = entries.map(entry => {
     if (entry.length <= 0) {
