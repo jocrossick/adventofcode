@@ -1,0 +1,21 @@
+{
+  "name": "adventofcode2024",
+  "version": "1.0.0",
+  "description": "Advent of code 2024",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ithub.com/jocrossick/adventofcode"
+  },
+  "author": "Jo Crossick",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.7"
+  }
+}
