@@ -1,205 +1,108 @@
 const { readFile } = require("../read.js");
 
-const day3 = () => {
+const day4 = () => {
   const rawInput = readFile("input.txt");
-  const lineLength = rawInput[0].length;
-  const rowsLength = rawInput.length;
 
-  //part 1
-  let countXmas = 0;
-  rawInput.forEach((line, lineIndex) => {
-    console.log("FOREACH Line index", lineIndex, line.split(''));
-    line.split('').forEach((letter, letterIndex) => {
-      console.log("FOREACH letter index", letterIndex);
-      if (letter == "X" || letter == "S") {
-        countXmas = countXmas +
-        readLeftRight1(rawInput, lineIndex, letterIndex, lineLength, rowsLength) +
-        readTopBottom1(rawInput, lineIndex, letterIndex, lineLength, rowsLength) +
-        readDiagonalFwd1(rawInput, lineIndex, letterIndex, lineLength, rowsLength) +
-        readDiagonalbkwd1(rawInput, lineIndex, letterIndex, lineLength, rowsLength)
-      }
-    })
+  const blankLineIndex = rawInput.indexOf('');
+
+  const sortRawArr = rawInput.slice(0, blankLineIndex);
+  const sortArr = sortRawArr.map(line => line.split("|").map(num => parseInt(num)));
+  const pagesRawArr = rawInput.slice(blankLineIndex+1, rawInput.length)
+  const pagesArr = pagesRawArr.map(line => line.split(",").map(num => parseInt(num)));
+
+  console.log(sortArr);
+  console.log(pagesArr);
+  const filterFunction = createFilterFunction(sortArr);
+  const sortFunction = createSortFunction(sortArr);
+
+  const correctLines = [];
+  const incorrectLines = [];
+
+  pagesArr.forEach((line, index) => {
+    console.log("Processing line", index);
+    let isSorted = true;
+    let i = 0;
+    while (isSorted &&  i < line.length - 1) {
+      isSorted = filterFunction(line[i], line[i+1]);
+      i++
+    }
+    if (isSorted) {
+      correctLines.push(line);
+    }
+    else {
+      incorrectLines.push(line);
+    }
   });
 
-  console.log("Count is", countXmas); //2545
+  console.log("filteredLines", correctLines);
 
-    //part 2
-    let countXmas2 = 0;
-    rawInput.forEach((line, lineIndex) => {
-      console.log("FOREACH Line index", lineIndex, line.split(''));
-      line.split('').forEach((letter, letterIndex) => {
-        console.log("FOREACH letter index", letterIndex);
-        if (letter == "A") {
+  // const sum = correctLines.reduce((acc, line) => {
+  //   const middleNum = line[(line.length-1)/2];
+  //   console.log("Middle num is", middleNum);
+  //   return acc + middleNum;
+  // }, 0);
+  // console.log("Part 1 is", sum); //5248
 
-          const horiztonal = readLeftRight2(rawInput, lineIndex, letterIndex, lineLength, rowsLength);
-          const vertical = readTopBottom2(rawInput, lineIndex, letterIndex, lineLength, rowsLength);
-          const diagonal1 = readDiagonalFwd2(rawInput, lineIndex, letterIndex, lineLength, rowsLength);
-          const diagonal2 = readDiagonalbkwd2(rawInput, lineIndex, letterIndex, lineLength, rowsLength);
+  incorrectLines.forEach(line => line.sort(sortFunction));
 
-          if (horiztonal && vertical) {
-            countXmas2++;
-          }
-          if (diagonal1 && diagonal2) {
-            countXmas2++;
-          }
-        }
-      })
-    });
+  const sumPart2 = incorrectLines.reduce((acc, line) => {
+    const middleNum = line[(line.length-1)/2];
+    console.log("Middle num is", middleNum);
+    return acc + middleNum;
+  }, 0);
+  console.log("Part 2 is", sumPart2); //5248
 
-    console.log("Count is", countXmas2);
+
 }
 
-const readLeftRight1 = (rawInput, lineIndex, letterIndex, lineLength, rowsLength) => {
-  console.log("readLeftRight", lineIndex, letterIndex);
-  const val = rawInput[lineIndex].slice(letterIndex, letterIndex + 4);
-  if (val == "XMAS" || val == "SAMX") {
-    console.log("Returning true", val);
+const createFilterFunction = (sortArr) => {
+  const filterFunction = (b, a) => {
+    console.log("Sorting entries", a, b);
+    const matches = sortArr.filter(entry => (entry[0] == a && entry[1] == b) || (entry[1] == a && entry[0] == b));
+    console.log("matches",matches);
+
+    if (matches.length != 1) {
+      console.log("Sorted");
+      return false;
+    }
+    if (matches[0][0] == a && matches[0][1] == b) {
+      console.log("Sorted");
+      return false;
+    }
+    if (matches[0][0] == b && matches[0][1] == a) {
+      console.log("Unsorted");
+      return true;
+    }
+    console.error("Should not have got to this point", a, b, sortArr);
+    return false;
+  }
+  return filterFunction;
+}
+
+const createSortFunction = (sortArr) => {
+  const sortFunction = (b, a) => {
+    console.log("Sorting entries", a, b);
+    const matches = sortArr.filter(entry => (entry[0] == a && entry[1] == b) || (entry[1] == a && entry[0] == b));
+    console.log("matches",matches);
+
+    if (matches.length != 1) {
+      console.log("Sorted");
+      return 1;
+    }
+    if (matches[0][0] == a && matches[0][1] == b) {
+      console.log("Sorted");
+      return 1;
+    }
+    if (matches[0][0] == b && matches[0][1] == a) {
+      console.log("Unsorted");
+      return -1;
+    }
+    console.error("Should not have got to this point", a, b, sortArr);
     return 1;
   }
-  console.log("Returning false", val);
-  return 0;
+  return sortFunction;
 }
 
-const readTopBottom1 = (rawInput, lineIndex, letterIndex, lineLength, rowsLength) => {
-  if (lineIndex > rowsLength - 4) {
-    console.log("readTopBottom : Too short"), lineIndex, letterIndex;
-    return 0;
-  }
-  const arr = [];
-  for (let i = lineIndex; i < lineIndex + 4; i++) {
-    const letter = rawInput[i].charAt(letterIndex);
-    arr.push(letter);
-  }
 
-  if (testArr1(arr)) {
-    console.log("readTopBottom Returning true", lineIndex, letterIndex, arr);
-    return 1;
-  }
-  console.log("readTopBottom Returning false", lineIndex, letterIndex, arr);
-  return 0;
-}
-
-const readDiagonalFwd1 = (rawInput, lineIndex, letterIndex, lineLength, rowsLength) => {
-  if (lineIndex > rowsLength - 4 || letterIndex > lineLength - 4) {
-    console.log("readDiagonalFwd: Too short", lineIndex, letterIndex);
-    return 0;
-  }
-  const arr = [];
-  for (let i = 0; i < 4; i++) {
-    arr.push(rawInput[lineIndex + i].charAt(letterIndex + i));
-  }
-  if (testArr1(arr)) {
-    console.log("readDiagonalFwd Returning true", lineIndex, letterIndex, arr);
-    return 1;
-  }
-  console.log("readDiagonalFwd Returning false", lineIndex, letterIndex, arr);
-  return 0;
-}
-
-const readDiagonalbkwd1 = (rawInput, lineIndex, letterIndex, lineLength, rowsLength) => {
-  if (lineIndex > rowsLength - 4 || letterIndex < 3) {
-    console.log("readDiagonalbkwd: Too short", lineIndex, letterIndex);
-    return 0;
-  }
-  const arr = [];
-  for (let i = 0; i < 4; i++) {
-    arr.push(rawInput[lineIndex + i].charAt(letterIndex - i));
-  }
-  if (testArr1(arr)) {
-    console.log("readDiagonalbkwd Returning true", lineIndex, letterIndex, arr);
-    return 1;
-  }
-  console.log("readDiagonalbkwd Returning false", lineIndex, letterIndex, arr);
-  return 0;
-}
-
-const testArr1 = (arr) => {
-  if (arr[0] == 'X' && arr[1] == 'M' && arr[2] == 'A' && arr[3] == 'S') {
-    return true;
-  }
-  if (arr[0] == 'S' && arr[1] == 'A' && arr[2] == 'M' && arr[3] == 'X') {
-    return true;
-  }
-  return false;
-}
-
-const readLeftRight2 = (rawInput, lineIndex, letterIndex, lineLength, rowsLength) => {
-  if (letterIndex > lineLength - 2 || letterIndex == 0) {
-    console.log("readLeftRight2 : Too short"), lineIndex, letterIndex;
-    return 0;
-  }
-  console.log("readLeftRight", lineIndex, letterIndex);
-  const val = rawInput[lineIndex].slice(letterIndex-1, letterIndex + 1);
-  if (val == "MAS" || val == "SAM") {
-    console.log("Returning true", val);
-    return 1;
-  }
-  console.log("Returning false", val);
-  return 0;
-}
-
-const readTopBottom2 = (rawInput, lineIndex, letterIndex, lineLength, rowsLength) => {
-  if (lineIndex > rowsLength - 2 || lineIndex == 0) {
-    console.log("readTopBottom : Too short"), lineIndex, letterIndex;
-    return 0;
-  }
-  const arr = [];
-  for (let i = lineIndex-1; i < lineIndex + 2; i++) {
-    const letter = rawInput[i].charAt(letterIndex);
-    arr.push(letter);
-  }
-
-  if (testArr2(arr)) {
-    console.log("readTopBottom Returning true", lineIndex, letterIndex, arr);
-    return 1;
-  }
-  console.log("readTopBottom Returning false", lineIndex, letterIndex, arr);
-  return 0;
-}
-
-const readDiagonalFwd2 = (rawInput, lineIndex, letterIndex, lineLength, rowsLength) => {
-  if (lineIndex > rowsLength - 2 || lineIndex == 0 || letterIndex > lineLength - 2 || letterIndex == 0) {
-    console.log("readDiagonalFwd: Too short", lineIndex, letterIndex);
-    return 0;
-  }
-  const arr = [];
-  for (let i = -1; i < 2; i++) {
-    arr.push(rawInput[lineIndex + i].charAt(letterIndex + i));
-  }
-  if (testArr2(arr)) {
-    console.log("readDiagonalFwd Returning true", lineIndex, letterIndex, arr);
-    return 1;
-  }
-  console.log("readDiagonalFwd Returning false", lineIndex, letterIndex, arr);
-  return 0;
-}
-
-const readDiagonalbkwd2 = (rawInput, lineIndex, letterIndex, lineLength, rowsLength) => {
-  if (lineIndex > rowsLength - 2 || lineIndex == 0 || letterIndex > lineLength - 2 || letterIndex == 0) {
-    console.log("readDiagonalbkwd2: Too short", lineIndex, letterIndex);
-    return 0;
-  }
-  const arr = [];
-  for (let i = -1; i < 2; i++) {
-    arr.push(rawInput[lineIndex + i].charAt(letterIndex - i));
-  }
-  if (testArr2(arr)) {
-    console.log("readDiagonalbkwd Returning true", lineIndex, letterIndex, arr);
-    return 1;
-  }
-  console.log("readDiagonalbkwd Returning false", lineIndex, letterIndex, arr);
-  return 0;
-}
-
-const testArr2 = (arr) => {
-  if (arr[0] == 'M' && arr[1] == 'A' && arr[2] == 'S') {
-    return true;
-  }
-  if (arr[0] == 'S' && arr[1] == 'A' && arr[2] == 'M') {
-    return true;
-  }
-  return false;
-}
-
-const today = () => day3();
+const today = () => day4();
 module.exports = { today };
