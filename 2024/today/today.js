@@ -1,108 +1,92 @@
 const { readFile } = require("../read.js");
 
-const day4 = () => {
-  const rawInput = readFile("input.txt");
+const day6 = () => {
+  const rawInput = readFile("test.txt");
 
-  const blankLineIndex = rawInput.indexOf('');
+  const mapArr = rawInput.map(line => line.split(''));
 
-  const sortRawArr = rawInput.slice(0, blankLineIndex);
-  const sortArr = sortRawArr.map(line => line.split("|").map(num => parseInt(num)));
-  const pagesRawArr = rawInput.slice(blankLineIndex+1, rawInput.length)
-  const pagesArr = pagesRawArr.map(line => line.split(",").map(num => parseInt(num)));
+  let guardPosition = [0, 0]; //lineNum, charNum
+  let guardDirection = "up"; //up|right|down|right
 
-  console.log(sortArr);
-  console.log(pagesArr);
-  const filterFunction = createFilterFunction(sortArr);
-  const sortFunction = createSortFunction(sortArr);
-
-  const correctLines = [];
-  const incorrectLines = [];
-
-  pagesArr.forEach((line, index) => {
-    console.log("Processing line", index);
-    let isSorted = true;
-    let i = 0;
-    while (isSorted &&  i < line.length - 1) {
-      isSorted = filterFunction(line[i], line[i+1]);
-      i++
+  mapArr.forEach((line, lineIndex) => line.forEach((letter, letterIndex) => {
+    if (letter == "^") {
+      guardPosition = [lineIndex, letterIndex];
     }
-    if (isSorted) {
-      correctLines.push(line);
+  }));
+
+  const isEdge = createIsEdge(mapArr);
+
+  let coordVisited = mapArr.map(line => line.map(position => false));
+
+  coordVisited[guardPosition[0]][guardPosition[1]] = true;
+  let breakpoint = 0;
+  while (!isEdge(guardPosition) && breakpoint <100) {
+
+    breakpoint++;
+
+    let nextSquare = [];
+    if (guardDirection == "up") {
+      guardPosition = [guardPosition[0] -1, guardPosition[1]];
+      if (!isEdge(guardPosition)) {
+        if (mapArr[guardPosition[0] -1][guardPosition[1]] == "#") {
+          guardDirection = "right";
+        }
+      }
     }
-    else {
-      incorrectLines.push(line);
+    else if (guardDirection == "right") {
+      guardPosition = [guardPosition[0], guardPosition[1] + 1];
+      if (!isEdge(guardPosition)) {
+        nextSquare = mapArr[guardPosition[0]][guardPosition[1] +1];
+        if (nextSquare == "#") {
+          guardDirection = "down";
+        }
     }
-  });
+    }
+    else if (guardDirection == "down") {
+      guardPosition = [guardPosition[0] +1, guardPosition[1]];
+      if (!isEdge(guardPosition)) {
+        nextSquare = mapArr[guardPosition[0] +1][guardPosition[1]];
+        if (nextSquare == "#") {
+          guardDirection = "left";
+        }
+      }
+    }
+    else if (guardDirection == "left") {
+      guardPosition = [guardPosition[0], guardPosition[1] -1];
+      if (!isEdge(guardPosition)) {
+        nextSquare = mapArr[guardPosition[0]][guardPosition[1] -1];
+        if (nextSquare == "#") {
+          guardDirection = "up";
+        }
+      }
+    }
 
-  console.log("filteredLines", correctLines);
-
-  // const sum = correctLines.reduce((acc, line) => {
-  //   const middleNum = line[(line.length-1)/2];
-  //   console.log("Middle num is", middleNum);
-  //   return acc + middleNum;
-  // }, 0);
-  // console.log("Part 1 is", sum); //5248
-
-  incorrectLines.forEach(line => line.sort(sortFunction));
-
-  const sumPart2 = incorrectLines.reduce((acc, line) => {
-    const middleNum = line[(line.length-1)/2];
-    console.log("Middle num is", middleNum);
-    return acc + middleNum;
-  }, 0);
-  console.log("Part 2 is", sumPart2); //5248
-
-
+    coordVisited[guardPosition[0]][guardPosition[1]] = true;
+  }
+  console.log("coordVisited is", coordVisited);
+  const coordsCount = coordVisited.reduce((acc1, line) => acc1 + line.reduce((acc2, position) => { if (position) {acc2++}; return acc2; }, 0), 0);
+  console.log("coordVisited", coordsCount);
 }
 
-const createFilterFunction = (sortArr) => {
-  const filterFunction = (b, a) => {
-    console.log("Sorting entries", a, b);
-    const matches = sortArr.filter(entry => (entry[0] == a && entry[1] == b) || (entry[1] == a && entry[0] == b));
-    console.log("matches",matches);
-
-    if (matches.length != 1) {
-      console.log("Sorted");
-      return false;
-    }
-    if (matches[0][0] == a && matches[0][1] == b) {
-      console.log("Sorted");
-      return false;
-    }
-    if (matches[0][0] == b && matches[0][1] == a) {
-      console.log("Unsorted");
+const createIsEdge = (mapArr) => {
+  const isEdge = (guardPosition) => {
+    if (guardPosition[0] ==0) {
       return true;
     }
-    console.error("Should not have got to this point", a, b, sortArr);
+    if (guardPosition[1] ==0) {
+      return true;
+    }
+    if (guardPosition[0] == mapArr[0].length -1) {
+      return true;
+    }
+    if (guardPosition[1] == mapArr.length -1) {
+      return true;
+    }
     return false;
   }
-  return filterFunction;
-}
-
-const createSortFunction = (sortArr) => {
-  const sortFunction = (b, a) => {
-    console.log("Sorting entries", a, b);
-    const matches = sortArr.filter(entry => (entry[0] == a && entry[1] == b) || (entry[1] == a && entry[0] == b));
-    console.log("matches",matches);
-
-    if (matches.length != 1) {
-      console.log("Sorted");
-      return 1;
-    }
-    if (matches[0][0] == a && matches[0][1] == b) {
-      console.log("Sorted");
-      return 1;
-    }
-    if (matches[0][0] == b && matches[0][1] == a) {
-      console.log("Unsorted");
-      return -1;
-    }
-    console.error("Should not have got to this point", a, b, sortArr);
-    return 1;
-  }
-  return sortFunction;
+  return isEdge;
 }
 
 
-const today = () => day4();
+const today = () => day6();
 module.exports = { today };
